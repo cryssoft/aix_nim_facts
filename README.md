@@ -14,76 +14,62 @@
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what
-problem it solves. This is your 30-second elevator pitch for your module.
-Consider including OS/Puppet version it works with.
-
-You can give more descriptive information in a second paragraph. This paragraph
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?" If your module has a range of functionality (installation, configuration,
-management, etc.), this is the time to mention it.
+The cryssoft-aix_nim_facts module populates the $::facts['aix_nim'] hash with 
+a few values that are of interest if you're using Puppet to manage AIX
+Network Install Manager (NIM) servers and clients.  The $::facts['aix_nim']['is_master']
+fact is one way to make package resources safe to install with the "nim" vs. "aix"
+provider regardless of whether the rule is operating on a NIM client or server.
 
 ## Setup
 
-### What aix_nim_facts affects **OPTIONAL**
+Put the module in place in your Puppet master server as usual.  AIX-based systems
+will start populating the $::facts['aix_nim'] hash with their next run, and you
+can start referencing those facts in your classes.
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+### What aix_nim_facts affects
 
-If there's more that they should know about, though, this is the place to mention:
+At this time, the cryssoft-aix_nim_facts module ONLY supplies custom facts.  It 
+does not change anything and should have no side-effects.
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+### Setup Requirements
 
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section
-here.
+As a custom facts module, I believe pluginsync must be enabled for this to work.
 
 ### Beginning with aix_nim_facts
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most
-basic use of the module.
+If you're using Puppet Enterprise, the new fact(s) will show up in the PE console
+for each AIX-based node under management.  If you're not using Puppet Enterprise,
+you'll need to use a different approach to checking for their existence and values.
 
 ## Usage
 
-This section is where you describe how to customize, configure, and do the
-fancy stuff with your module here. It's especially helpful if you include usage
-examples and code samples for doing things with your module.
+As notes, cryssoft-aix_nim_facts is only providing custom facts.  Once the module
+and its Ruby payload are distributed to your AIX-based nodes, those facts will be
+available in your classes.
 
 ## Reference
 
-Users need a complete list of your module's classes, types, defined types providers, facts, and functions, along with the parameters for each. You can provide this list either via Puppet Strings code comments or as a complete list in this Reference section.
-
-* If you are using Puppet Strings code comments, this Reference section should include Strings information so that your users know how to access your documentation.
-
-* If you are not using Puppet Strings, include a list of all of your classes, defined types, and so on, along with their parameters. Each element in this listing should include:
-
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
+$::facts['aix_nim'] is the top of a small hash.  The data it contains is based on
+what's in the /etc/niminfo file (client and server) as well as some "lsnim" outputs
+for the server.
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc. If there
-are Known Issues, you might want to include them under their own heading here.
+This should work on any AIX-based system.  
+
+NOTE:  This module has been tested on AIX 6.1, 7.1, and 7.2 NIM clients and 7.2 NIM
+servers.  It does not appear to have any side effects.  The "lsnim" commands that run
+on NIM servers do add a little overhead to the fact gathering process for each puppet
+agent run.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+Make suggestions.  Look at the code on github.  Send updates or outputs.  I don't have
+a specific set of rules for contributors at this point.
 
-## Release Notes/Contributors/Etc. **Optional**
+## Release Notes/Contributors/Etc.
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel
-are necessary or important to include here. Please use the `## ` header.
+Starting with 0.3.0 - Pretty simple stuff.  Not sure if this will ever morph into a
+control/configuration module with types/providers/etc. to actually do anything 
+meaningful about controlling NIM clients/servers.  I'm not even sure that would be a
+good idea.
