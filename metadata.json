@@ -1,6 +1,6 @@
 {
   "name": "cryssoft-aix_nim_facts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Chris Petersen, Crystallized Software",
   "summary": "Collect and collate custom facts about this machine's AIX NIM configuration",
   "license": "Apache-2.0",
